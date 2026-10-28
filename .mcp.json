@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "railjournal": {
+      "type": "http",
+      "url": "https://railjournal.in/AI_plugins/Claude/mcp.php"
+    }
+  }
+}
