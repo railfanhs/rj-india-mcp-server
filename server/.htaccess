@@ -1,0 +1,5 @@
+Options -Indexes
+php_value auto_prepend_file none
+<FilesMatch "^(railjournal|lightweight)\.php$">
+    Require all denied
+</FilesMatch>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RailJournal Plugin Privacy Policy</title>
+  <meta name="description" content="How RailJournal handles information received through its railway-information plugin and MCP service.">
+</head>
+<body>
+  <main>
+    <h1>RailJournal Plugin Privacy Policy</h1>
+    <p>Last updated: 28 October 2026</p>
+    <p>This policy covers the RailJournal railway-information plugin and its remote MCP service at railjournal.in. The plugin provides train information, reported running status and station information. RailJournal is the service operator. For general website browsing, see the <a href="https://railjournal.in/privacy.php">website privacy policy</a>.</p>
+
+    <h2>Information received</h2>
+    <p>The service receives the information supplied in a tool request: train numbers or names, station names or codes, travel dates, and related search options. These journey details can reveal travel interests or plans. Only provide information needed for your request.</p>
+    <p>Hosting and network infrastructure can process connection information, such as IP addresses, request times, endpoint paths, user-agent information and response status. These records are created by the hosting and network providers, not by the plugin. Request bodies, which contain the tool inputs, are not part of those records. The plugin does not read, hash or store client IP addresses.</p>
+    <p>The plugin does not request a full chat history, passwords, payment details, government identifiers, PNRs or passenger records. It does not require a RailJournal account. The plugin implementation does not maintain a database of chat transcripts or raw MCP request bodies.</p>
+
+    <h2>Purposes</h2>
+    <p>RailJournal uses request information to find and return the railway information you asked for. Aggregate counters, minimal operational request logs and provider logs support service reliability, troubleshooting and overload protection. The plugin does not serve advertisements or perform bookings or payments.</p>
+
+    <h2>Recipients and external services</h2>
+    <p>RailJournal processes requests through its hosting and network infrastructure, including Hostinger and Cloudflare. Train and station information is read through local RailJournal data helpers. In low-load mode, the running-status tool reads existing website caches without starting external refreshes. All data is read from RailJournal's own database and caches; no request is forwarded to a third-party service. No part of a conversation is sent to RailJournal beyond the tool inputs.</p>
+    <p>The AI client you use, such as Claude, receives tool responses and handles your conversation under its own privacy policy. RailJournal does not control the AI client's retention or processing. Hosting and network providers handle their operational records under their applicable service configurations and privacy policies: <a href="https://www.hostinger.com/legal/privacy-policy">Hostinger</a> and <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>.</p>
+
+    <h2>Retention</h2>
+    <p>The plugin does not store tool inputs or tool responses. It keeps no response cache, chat transcript or per-client history. A private operational text log records each HTTP request's time, HTTP method, supported MCP method and tool name, response status, success or failure, numeric protocol error code when present, and processing duration. These records do not contain client IP addresses, user identifiers, request IDs, credentials, tool arguments, search terms, journey details, request bodies or response contents. Unknown method and tool names are not stored verbatim.</p>
+    <p>Operational request logs are stored outside the public website directory and are accessible only to the operator. They are retained until the operator deletes them; no automatic deletion period is currently configured. Only minimal operational metadata remains after a request is answered; its tool inputs and response contents are discarded.</p>
+    <p>To protect the service from overload, the plugin keeps aggregate counters of how many requests it handled in the current minute and hour. These counters contain only numbers and time windows, with no identifiers or request content, and are overwritten as the time window changes. Running status is read from RailJournal's existing website cache of public train data; the plugin only reads that cache and does not write to it.</p>
+    <p>Hosting, network and error-log retention is controlled by the relevant provider and service configuration. A single retention period for those records has not been established by this plugin. Error log lines written by the plugin contain the tool name and a generic error message, not tool inputs or results. Contact RailJournal for information about a particular record or retention request. The website's separate behavioral-analytics policy does not apply to this plugin.</p>
+
+    <h2>Your choices and requests</h2>
+    <p>You can choose which journey details to provide and stop using or disable the plugin in your AI client. Public timetable and station requests do not require passenger identifiers. For privacy questions or applicable access, correction or deletion requests, contact <!--email_off--><a href="mailto:railjournalindia@gmail.com">railjournalindia@gmail.com</a><!--/email_off-->. Include only the minimum information needed to identify your request, such as the approximate request time and affected service; do not email passwords, payment details or PNRs.</p>
+
+    <h2>Contact and related information</h2>
+    <p><a href="https://railjournal.in/contact.php">RailJournal support</a> | <a href="https://railjournal.in/terms.php">Terms and conditions</a> | <a href="https://railjournal.in">RailJournal website</a></p>
+  </main>
+</body>
+</html>
