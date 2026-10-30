@@ -170,6 +170,24 @@ final class DataClient
                     throw new DataError('Train timetable exceeds the low-load row limit.');
                 }
                 return ['ok' => true, 'train_number' => $query['train'], 'count' => count($stops), 'stops' => $stops];
+            case '/api/trains_between.php':
+                $statement = $this->database()->prepare(
+                    "SELECT a.train_number, m.TRAIN_NAME AS train_name, m.DAYS_OF_RUN AS days_of_run,
+                            TIME_FORMAT(a.departure, '%H:%i') AS departure, a.day AS departure_day,
+                            TIME_FORMAT(b.arrival, '%H:%i') AS arrival, b.day AS arrival_day,
+                            a.distance_km AS from_km, b.distance_km AS to_km,
+                            (b.day - a.day) * 1440
+                              + TIME_TO_SEC(b.arrival) DIV 60 - TIME_TO_SEC(a.departure) DIV 60 AS travel_minutes
+                     FROM train_schedule a
+                     JOIN train_schedule b ON b.train_number = a.train_number AND b.seq > a.seq
+                     LEFT JOIN train_master m ON m.TRAIN_NUMBER = a.train_number
+                     WHERE a.station_code = ? AND b.station_code = ?
+                       AND a.commercial_halt = 1 AND b.commercial_halt = 1
+                     ORDER BY a.departure ASC, a.train_number ASC LIMIT 26"
+                );
+                $statement->execute([$query['from'], $query['to']]);
+                $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+                return ['ok' => true, 'trains' => $rows];
             case '/api/station_info.php':
                 $statement = $this->database()->prepare(
                     'SELECT Code, Name, Hindi_name, Division, Zone, Gauge,
@@ -229,6 +247,9 @@ final class Server
                 'train_number' => $train, 'origin_departure_date' => $date,
             ], ['train_number', 'origin_departure_date']],
             ['search_stations', 'Resolve an Indian railway station name or code. Ask the user to choose if ambiguous.', ['query' => $query], ['query']],
+            ['find_trains_between_stations', 'List trains that run from one station to another, with departure, arrival, travel time and operating days. Both stations must be resolved station codes; use search_stations first. Scheduled data, not live. Returns at most 25 trains.', [
+                'from_station' => $station, 'to_station' => $station,
+            ], ['from_station', 'to_station']],
             ['server_status', 'Check that the RailJournal server is reachable. Returns the server version, available tool names and current time. Takes no input and returns no railway data.', [], []],
             ['get_station_info', 'Get station name, location, zone, division and available station facts. Does not provide live platform assignments.', ['station_code' => $station], ['station_code']],
         ];
@@ -447,6 +468,28 @@ final class Server
                     $warnings[] = 'Served from the website running-status cache (up to about two minutes old).';
                 }
                 $source = 'https://railjournal.in/Railradar.php?' . http_build_query(['train' => $number, 'startDate' => $date->format('d-M-Y')]);
+                break;
+            case 'find_trains_between_stations':
+                if ($input['from_station'] === $input['to_station']) {
+                    throw new DataError('Origin and destination must be different stations.');
+                }
+                $result = $this->get('/api/trains_between.php', ['from' => $input['from_station'], 'to' => $input['to_station']]);
+                $trains = $result['trains'] ?? null;
+                if (!is_array($trains)) {
+                    throw new DataError('RailJournal returned an invalid route response.');
+                }
+                $truncated = count($trains) > 25;
+                $trains = array_slice($trains, 0, 25);
+                foreach ($trains as &$train) {
+                    $train['travel_minutes'] = $train['travel_minutes'] === null ? null : (int) $train['travel_minutes'];
+                    $train['departure_day'] = (int) $train['departure_day'];
+                    $train['arrival_day'] = (int) $train['arrival_day'];
+                }
+                unset($train);
+                $data = ['from_station' => $input['from_station'], 'to_station' => $input['to_station'],
+                          'count' => count($trains), 'truncated' => $truncated, 'trains' => $trains];
+                $warnings[] = 'Scheduled timetable data, not live. Days are relative to each train origin (day 1 = origin departure day). Trains are listed by departure time from the origin station you gave. An empty list means no scheduled train was found in RailJournal data, not that none exists.';
+                $source = 'https://railjournal.in/Stations/' . $input['from_station'];
                 break;
             case 'server_status':
                 $data = [

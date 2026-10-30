@@ -4,7 +4,7 @@ Look up Indian Railways trains and stations from [RailJournal](https://railjourn
 
 ## What it does
 
-The plugin connects Claude to the RailJournal MCP server, a read-only service with six tools:
+The plugin connects Claude to the RailJournal MCP server, a read-only service with seven tools:
 
 | Tool | Purpose |
 | --- | --- |
@@ -12,6 +12,7 @@ The plugin connects Claude to the RailJournal MCP server, a read-only service wi
 | `get_train_info` | Train profile, operating days, classes and timetable |
 | `search_stations` | Find a station by name or code |
 | `get_station_info` | Station name, location, zone, division and facts |
+| `find_trains_between_stations` | Trains running from one station to another, with times and operating days |
 | `server_status` | Health check: server version and available tools |
 | `get_train_running_status` | Live running status from the RailJournal NTES feed |
 
@@ -61,7 +62,7 @@ RailJournal site code that is not in this repo (`config/rj_realtime_cache.php`,
 ## Tools (server details)
 
 `search_trains`, `get_train_info`, `get_train_running_status`, `search_stations`,
-`get_station_info`, `server_status`.
+`get_station_info`, `find_trains_between_stations`, `server_status`.
 
 Running status is served from the website cache and falls back to the live
 `trainxntes` table. `server_status` is a no-input health check. A new tool must

@@ -1,8 +1,8 @@
 {
   "name": "railjournal-india",
   "displayName": "RailJournal India",
-  "version": "1.0.0",
-  "description": "Indian Railways train and station lookup, timetables and live running status from RailJournal.",
+  "version": "1.1.0",
+  "description": "Indian Railways train and station lookup, timetables and cached running status from RailJournal.",
   "author": {
     "name": "RailJournal India",
     "email": "railjournalindia@gmail.com",

@@ -151,7 +151,7 @@ final class LightweightRuntime
     {
         if (!in_array($name, [
             'search_trains', 'search_stations', 'get_train_info',
-            'get_station_info', 'get_train_running_status', 'server_status',
+            'get_station_info', 'get_train_running_status', 'server_status', 'find_trains_between_stations',
         ], true)) {
             throw new RuntimeException('Unknown MCP tool.');
         }
